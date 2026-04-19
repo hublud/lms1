@@ -83,7 +83,7 @@ export default function CourseLearnPage() {
         
         if (mods) {
           // Sort lessons within modules
-          const sortedMods = mods.map(m => ({
+          const sortedMods = mods.map((m: any) => ({
             ...m,
             lessons: m.lessons?.sort((a: any, b: any) => a.order - b.order) || []
           }));
@@ -104,7 +104,7 @@ export default function CourseLearnPage() {
            console.warn("Completions check issue:", compsErr);
         }
         
-        if (comps) setCompletedLessons(comps.map(c => c.lesson_id));
+        if (comps) setCompletedLessons(comps.map((c: any) => c.lesson_id));
 
       } catch (err: any) {
         console.error("Error loading course:", err);

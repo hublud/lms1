@@ -67,7 +67,7 @@ export default function HomePage() {
           .limit(8);
         
         if (crs) {
-          const mapped = crs.map(c => ({
+          const mapped = crs.map((c: any) => ({
             id: c.id,
             title: c.title,
             instructor: (c as any).instructor?.full_name || "Gizami Instructor",

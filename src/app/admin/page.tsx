@@ -55,7 +55,7 @@ export default function AdminDashboardPage() {
           `);
         
         const enrollmentCount = enrollments?.length || 0;
-        const totalRev = enrollments?.reduce((acc, curr: any) => acc + (curr.courses?.price || 0), 0) || 0;
+        const totalRev = enrollments?.reduce((acc: number, curr: any) => acc + (curr.courses?.price || 0), 0) || 0;
 
         setStats({
           totalStudents: studentCount || 0,
@@ -77,7 +77,7 @@ export default function AdminDashboardPage() {
           .limit(5);
         
         if (latestEnrols) {
-          const mapped = latestEnrols.map(e => ({
+          const mapped = latestEnrols.map((e: any) => ({
             id: e.id,
             type: "enrollment",
             text: `${(e.profiles as any)?.full_name || "A student"} enrolled in ${ (e.courses as any)?.title || "a course"}`,
@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
           .limit(4);
         
         if (topCrs) {
-          const sorted = topCrs.sort((a, b) => (b.enrollments?.[0]?.count || 0) - (a.enrollments?.[0]?.count || 0));
+          const sorted = topCrs.sort((a: any, b: any) => (b.enrollments?.[0]?.count || 0) - (a.enrollments?.[0]?.count || 0));
           setTopCourses(sorted);
         }
 
@@ -121,8 +121,8 @@ export default function AdminDashboardPage() {
     },
     {
       label: "Total Revenue",
-      value: `$${(stats.totalRevenue / 1000).toFixed(1)}K`,
-      change: "+$12K this month",
+      value: `${(stats.totalRevenue / 1000).toFixed(1)}K XAF`,
+      change: "+12.5% this month",
       positive: true,
       icon: DollarSign,
       color: "text-[var(--accent)]",

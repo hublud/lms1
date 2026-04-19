@@ -121,13 +121,13 @@ export default function AdminSettingsPage() {
                   <div>
                     <label className="form-label">Currency</label>
                     <select className="form-input" value={general.currency} onChange={(e) => setGeneral({ ...general, currency: e.target.value })}>
-                      {["XAF", "USD", "EUR", "NGN", "ZAR"].map((c) => <option key={c} value={c}>{c}</option>)}
+                      {["XAF", "USD", "EUR", "NGN", "ZAR"].map((c: string) => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className="form-label">Default Language</label>
                     <select className="form-input" value={general.language} onChange={(e) => setGeneral({ ...general, language: e.target.value })}>
-                      {["English", "French", "Spanish"].map((l) => <option key={l} value={l}>{l}</option>)}
+                      {["English", "French", "Spanish"].map((l: string) => <option key={l} value={l}>{l}</option>)}
                     </select>
                   </div>
                   <div>

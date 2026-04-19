@@ -63,7 +63,7 @@ export default function CoursesPage() {
 
         if (crs) {
           // Map to our local Course interface
-          const mapped = crs.map(c => ({
+          const mapped = crs.map((c: any) => ({
             id: c.id,
             title: c.title,
             instructor: (c as any).instructor?.full_name || "Gizami Instructor",
@@ -91,7 +91,7 @@ export default function CoursesPage() {
     fetchData();
   }, []);
 
-  const filtered = fetchedCourses.filter((c) => {
+  const filtered = fetchedCourses.filter((c: any) => {
     const matchSearch = c.title.toLowerCase().includes(search.toLowerCase());
     const matchCategory = selectedCategory === "All" || c.category === selectedCategory;
     const matchPrice =
@@ -197,7 +197,7 @@ export default function CoursesPage() {
               <div>
                 <h3 className="text-sm font-semibold text-gray-700 mb-3">Category</h3>
                 <div className="space-y-2">
-                  {["All", ...fetchedCategories.map((c) => c.name)].map((cat) => (
+                  {["All", ...fetchedCategories.map((c: any) => c.name)].map((cat: string) => (
                     <label key={cat} className="flex items-center gap-2.5 cursor-pointer group">
                       <input
                         type="radio"

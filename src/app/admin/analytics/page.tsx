@@ -81,8 +81,8 @@ export default function AdminAnalyticsPage() {
 
       const avgRating = ratedCoursesCount > 0 ? totalRating / ratedCoursesCount : 0;
       const sortedCourses = coursesWithStats
-        .filter(c => c.status === "published")
-        .sort((a, b) => b.enrollments - a.enrollments)
+        .filter((c: any) => c.status === "published")
+        .sort((a: any, b: any) => b.enrollments - a.enrollments)
         .slice(0, 5);
 
       // 3. Category Breakdown
@@ -96,7 +96,7 @@ export default function AdminAnalyticsPage() {
            category: cat.name,
            count: enrolls
          };
-      }).sort((a, b) => b.count - a.count).slice(0, 5);
+      }).sort((a: any, b: any) => b.count - a.count).slice(0, 5);
 
       setKpis({
         totalStudents: studentCount || 0,

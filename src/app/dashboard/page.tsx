@@ -155,7 +155,7 @@ function DashboardContent() {
         
         if (enrols) {
           // Map to match the expected UI structure
-          const mapped = enrols.map(e => ({
+          const mapped = enrols.map((e: any) => ({
             id: e.courses.id,
             title: e.courses.title,
             instructor: e.courses.instructor?.full_name || "Gizami Instructor", // Default
@@ -170,11 +170,11 @@ function DashboardContent() {
           setEnrollments(mapped);
 
           // Populate certificates for completed courses
-          const completedEnrols = enrols.filter(e => e.progress >= 100);
-          const mappedCerts = completedEnrols.map(e => ({
+          const completedEnrols = enrols.filter((e: any) => e.progress >= 100);
+          const mappedCerts = completedEnrols.map((e: any) => ({
             id: e.courses.id,
             title: e.courses.title,
-            date: new Date(e.enrolled_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+            date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
             instructor: e.courses.instructor?.full_name || "Gizami Instructor",
             image: e.courses.image_url || "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80",
             studentName: prof?.full_name || authUser.email?.split("@")[0] || "Student"

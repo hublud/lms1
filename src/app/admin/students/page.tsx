@@ -150,9 +150,9 @@ export default function AdminStudentsPage() {
   });
 
   const totalStudents = students.length;
-  const activeStudents = students.filter((s) => s.status === "active").length;
-  const avgSpend = totalStudents > 0 ? Math.round(students.reduce((acc, s) => acc + s.totalSpent, 0) / totalStudents) : 0;
-  const avgCompletion = totalStudents > 0 ? Math.round(students.reduce((acc, s) => acc + s.completionRate, 0) / totalStudents) : 0;
+  const activeStudents = students.filter((s: StudentData) => s.status === "active").length;
+  const avgSpend = totalStudents > 0 ? Math.round(students.reduce((acc: number, s: StudentData) => acc + s.totalSpent, 0) / totalStudents) : 0;
+  const avgCompletion = totalStudents > 0 ? Math.round(students.reduce((acc: number, s: StudentData) => acc + s.completionRate, 0) / totalStudents) : 0;
 
   if (!mounted || isLoading) {
     return (
@@ -177,7 +177,7 @@ export default function AdminStudentsPage() {
             { label: "Total Students", value: totalStudents.toLocaleString(), icon: Users, color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
             { label: "Active (30d)", value: activeStudents.toLocaleString(), icon: CheckCircle, color: "text-green-600", bg: "bg-green-100" },
             { label: "Avg. Completion", value: `${avgCompletion}%`, icon: TrendingUp, color: "text-blue-600", bg: "bg-blue-100" },
-            { label: "Avg. Spend", value: `$${avgSpend}`, icon: TrendingUp, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
+            { label: "Avg. Spend", value: `${avgSpend.toLocaleString()} XAF`, icon: TrendingUp, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-2xl border border-[var(--border)] p-4">
               <div className={`w-9 h-9 ${stat.bg} rounded-xl flex items-center justify-center mb-2`}>
@@ -204,7 +204,7 @@ export default function AdminStudentsPage() {
           </div>
           <div className="flex items-center gap-1.5">
             <Filter className="w-4 h-4 text-gray-400" />
-            {["all", "active", "inactive"].map((s) => (
+            {["all", "active", "inactive"].map((s: string) => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
@@ -236,8 +236,8 @@ export default function AdminStudentsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border)]">
-                {filtered.map((student) => {
-                  const status = statusConfig[student.status];
+                {filtered.map((student: StudentData) => {
+                  const status = (statusConfig as any)[student.status];
                   return (
                     <tr key={student.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-5 py-4">
@@ -273,7 +273,7 @@ export default function AdminStudentsPage() {
                       </td>
                       <td className="px-4 py-4">
                         <span className="text-sm font-semibold text-gray-800">
-                          {student.totalSpent > 0 ? `$${student.totalSpent}` : "Free"}
+                          {student.totalSpent > 0 ? `${student.totalSpent.toLocaleString()} XAF` : "Free"}
                         </span>
                       </td>
                       <td className="px-4 py-4">

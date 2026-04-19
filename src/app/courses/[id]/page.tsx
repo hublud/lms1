@@ -68,7 +68,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
           .order("order", { ascending: true });
         
         if (mods) {
-          const sortedMods = mods.map(m => ({
+          const sortedMods = mods.map((m: any) => ({
             ...m,
             lessons: m.lessons?.sort((a: any, b: any) => a.order - b.order) || []
           }));

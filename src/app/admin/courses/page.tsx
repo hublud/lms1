@@ -53,7 +53,7 @@ export default function AdminCoursesPage() {
         `);
       
       if (data) {
-        const mapped = data.map(c => ({
+        const mapped = data.map((c: any) => ({
           ...c,
           category: c.categories?.name || "Uncategorized",
           enrollmentCount: c.enrollments?.[0]?.count || 0,
@@ -103,7 +103,7 @@ export default function AdminCoursesPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
             { label: "Total Courses", value: fetchedCourses.length, icon: BookOpen, color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
-            { label: "Published", value: fetchedCourses.filter(c => c.status === "published").length, icon: CheckCircle, color: "text-green-600", bg: "bg-green-100" },
+            { label: "Published", value: fetchedCourses.filter((c: any) => c.status === "published").length, icon: CheckCircle, color: "text-green-600", bg: "bg-green-100" },
             { label: "Total Enrollments", value: totalEnrollments.toLocaleString(), icon: Users, color: "text-blue-600", bg: "bg-blue-100" },
             { label: "Total Revenue", value: `${(totalRevenue / 1000).toFixed(0)}K XAF`, icon: DollarSign, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
           ].map((stat) => (

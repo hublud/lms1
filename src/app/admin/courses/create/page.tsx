@@ -1040,9 +1040,9 @@ function CreateCoursePageInner() {
       // 3. Sync Modules & Lessons
       // Get existing modules for this course to handle deletions
       const { data: existingModules } = await supabase.from("modules").select("id").eq("course_id", finalCourseId);
-      const existingModuleIds = existingModules?.map(m => m.id) || [];
-      const currentModuleIds = modules.filter(m => !m.id.startsWith("new-") && !m.id.startsWith("m")).map(m => m.id);
-      const modulesToDelete = existingModuleIds.filter(id => !currentModuleIds.includes(id));
+      const existingModuleIds = existingModules?.map((m: any) => m.id) || [];
+      const currentModuleIds = modules.filter((m: any) => !m.id.startsWith("new-") && !m.id.startsWith("m")).map((m: any) => m.id);
+      const modulesToDelete = existingModuleIds.filter((id: any) => !currentModuleIds.includes(id));
 
       if (modulesToDelete.length > 0) {
         await supabase.from("modules").delete().in("id", modulesToDelete);
@@ -1070,9 +1070,9 @@ function CreateCoursePageInner() {
 
         // Sync Lessons for this module
         const { data: existingLessons } = await supabase.from("lessons").select("id").eq("module_id", moduleId);
-        const existingLessonIds = existingLessons?.map(l => l.id) || [];
-        const currentLessonIds = module.lessons.filter(l => !l.id.startsWith("new-") && !l.id.startsWith("l")).map(l => l.id);
-        const lessonsToDelete = existingLessonIds.filter(id => !currentLessonIds.includes(id));
+        const existingLessonIds = existingLessons?.map((l: any) => l.id) || [];
+        const currentLessonIds = (module as any).lessons.filter((l: any) => !l.id.startsWith("new-") && !l.id.startsWith("l")).map((l: any) => l.id);
+        const lessonsToDelete = existingLessonIds.filter((id: any) => !currentLessonIds.includes(id));
 
         if (lessonsToDelete.length > 0) {
           await supabase.from("lessons").delete().in("id", lessonsToDelete);
