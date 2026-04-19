@@ -1,10 +1,20 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Helper to get supabase client safely
+export const getSupabase = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  if (!url || !key) {
+    if (typeof window === 'undefined') {
+      console.warn("Supabase credentials missing during build/server-side. Standard client will return null.");
+    }
+    return null as any;
+  }
+  return createClient(url, key);
+};
 
-// Standard client for client-side operations
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = getSupabase();
 
 // Types for our database tables (can be expanded later)
 export type Tables = {
