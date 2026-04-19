@@ -212,12 +212,12 @@ export default function CourseCard({ course, loading }: CourseCardProps) {
           {/* Price + CTA */}
           <div className="mt-auto flex items-center justify-between gap-2">
             <div>
-              {course.price === "free" ? (
+              {course.price === "free" || !course.price || course.price === 0 ? (
                 <span className="text-lg font-bold text-[var(--primary)]">Free</span>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-gray-800">{course.price.toLocaleString()} XAF</span>
-                  <span className="text-sm text-gray-400 line-through">{(Math.round(course.price * 1.5)).toLocaleString()} XAF</span>
+                  <span className="text-lg font-bold text-gray-800">{Number(course.price).toLocaleString()} XAF</span>
+                  <span className="text-sm text-gray-400 line-through">{(Math.round(Number(course.price) * 1.5)).toLocaleString()} XAF</span>
                 </div>
               )}
             </div>
