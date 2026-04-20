@@ -64,16 +64,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md relative space-y-5">
         {/* Logo */}
         <div className="text-center mb-6">
-          <Link href="/" className="inline-flex items-center" aria-label="Gizami Home">
-            <Image 
-              src="/logo-gizami.png" 
-              alt="Gizami" 
-              width={160} 
-              height={56} 
-              className="h-14 w-auto object-contain"
-              priority
-            />
-          </Link>
+
           <h1 className="text-3xl font-extrabold text-gray-800 mt-4">Welcome back!</h1>
           <p className="text-gray-500 mt-1">Log in to continue your learning journey</p>
         </div>

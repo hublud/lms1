@@ -63,15 +63,7 @@ export default function SignupPage() {
           />
         </div>
         <div className="relative flex flex-col justify-center px-12 text-white">
-          <Link href="/" className="mb-14 block bg-white/90 p-2 w-fit rounded-xl">
-            <Image 
-              src="/logo-gizami.png" 
-              alt="Gizami" 
-              width={160} 
-              height={56} 
-              className="h-10 w-auto object-contain" 
-            />
-          </Link>
+
 
           <h1 className="text-4xl font-extrabold leading-tight mb-4">
             Start Your Learning Journey Today
@@ -103,16 +95,7 @@ export default function SignupPage() {
       {/* Right form panel */}
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          {/* Mobile logo */}
-          <Link href="/" className="lg:hidden block mb-8">
-            <Image 
-              src="/logo-gizami.png" 
-              alt="Gizami" 
-              width={100} 
-              height={32} 
-              className="h-8 w-auto object-contain" 
-            />
-          </Link>
+
 
           <div className="bg-white rounded-3xl shadow-2xl p-8 border border-[var(--border)]">
             <div className="mb-8">

@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       headers: {
         "Content-Type": "application/json",
         "x-api-key": apiKey,
-        Authorization: `Bearer ${apiToken}`,
+        Authorization: `Basic ${Buffer.from(`${apiKey}:${apiToken}`).toString("base64")}`,
         mode: "live",
       },
       body: JSON.stringify({

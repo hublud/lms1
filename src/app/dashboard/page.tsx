@@ -160,8 +160,8 @@ function DashboardContent() {
             title: e.courses.title,
             instructor: e.courses.instructor?.full_name || "Gizami Instructor", // Default
             category: "Technology", // Placeholder or fetch actual
-            progress: e.progress,
-            completedLessons: 0, // Need to implement lesson completions count
+            progress: e.progress || 0,
+            completedLessons: Math.round(((e.progress || 0) / 100) * (e.courses.lessons_count || 10)),
             totalLessons: e.courses.lessons_count,
             image: e.courses.image_url,
             lastAccessed: "Recently",
@@ -199,6 +199,19 @@ function DashboardContent() {
   const totalProgress = enrollments.length > 0
     ? Math.round(enrollments.reduce((acc, c) => acc + (c.progress || 0), 0) / enrollments.length)
     : 0;
+
+  const totalHoursLearned = enrollments.reduce((acc, c) => acc + (c.completedLessons * 0.5), 0).toFixed(1);
+
+  const dynamicAchievements = [
+    { icon: Flame, label: "7-Day Streak", color: "text-orange-500", bg: "bg-orange-100" },
+    { icon: Star, label: "Active Learner", color: "text-amber-500", bg: "bg-amber-100" },
+  ];
+  if (certificates.length > 0) {
+    dynamicAchievements.push({ icon: Award, label: `${certificates.length} Certificate${certificates.length > 1 ? 's' : ''}`, color: "text-purple-500", bg: "bg-purple-100" });
+  }
+  if (totalProgress > 50) {
+    dynamicAchievements.push({ icon: Target, label: "Goal Crusher", color: "text-green-600", bg: "bg-green-100" });
+  }
 
   const tabLabel = navItems.find((n) => n.id === activeTab)?.label || "Dashboard";
 
@@ -348,7 +361,7 @@ function DashboardContent() {
                   {[
                     { label: "Courses Enrolled", value: enrollments.length, icon: BookOpen, color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
                     { label: "Avg. Progress", value: `${totalProgress}%`, icon: TrendingUp, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
-                    { label: "Hours Learned", value: "0h", icon: Clock, color: "text-purple-600", bg: "bg-purple-100" },
+                    { label: "Hours Learned", value: `${totalHoursLearned}h`, icon: Clock, color: "text-purple-600", bg: "bg-purple-100" },
                     { label: "Certificates", value: certificates.length, icon: Award, color: "text-blue-600", bg: "bg-blue-100" },
                   ].map((stat) => (
                     <div key={stat.label} className="bg-white rounded-2xl border border-[var(--border)] p-4 hover:shadow-md transition-shadow">
@@ -368,7 +381,7 @@ function DashboardContent() {
                   Your Achievements
                 </h2>
                 <div className="flex flex-wrap gap-3">
-                  {achievements.map((a) => (
+                  {dynamicAchievements.map((a) => (
                     <div key={a.label} className={`flex items-center gap-2 px-3 py-2 rounded-xl ${a.bg}`}>
                       <a.icon className={`w-4 h-4 ${a.color}`} />
                       <span className={`text-xs font-semibold ${a.color}`}>{a.label}</span>
@@ -434,7 +447,22 @@ function DashboardContent() {
                   Recently Accessed Lessons
                 </h2>
                 <div className="space-y-3">
-                  <p className="text-xs text-gray-400 italic">No recently accessed lessons.</p>
+                  {enrollments.length === 0 ? (
+                    <p className="text-xs text-gray-400 italic">No recently accessed lessons.</p>
+                  ) : (
+                    enrollments.slice(0, 3).map((course) => (
+                      <Link key={course.id} href={`/courses/${course.id}/learn`} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors border border-[var(--border)] group">
+                        <div className="w-10 h-10 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors">
+                          <Play className="w-4 h-4 text-[var(--primary)] ml-0.5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-gray-800 line-clamp-1">{course.title}</p>
+                          <p className="text-xs text-gray-500 mt-0.5">Resume from {course.nextLesson}</p>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                      </Link>
+                    ))
+                  )}
                 </div>
               </div>
             </>

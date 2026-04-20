@@ -25,16 +25,26 @@ const navLinks = [
 ];
 
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [mounted, setMounted] = useState(false);
+
+  const isHome = pathname === "/";
+  const needsDarkText = !isHome || isScrolled || isMobileOpen;
+
+  // Do not render the global Navbar in the admin panel or student dashboard
+  // because they have their own sidebar & header.
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/dashboard")) {
+    return null;
+  }
 
   useEffect(() => {
     // Check initial session
@@ -84,7 +94,9 @@ export default function Navbar() {
           ? "glass shadow-lg shadow-black/5"
           : isMobileOpen 
             ? "bg-white border-b border-[var(--border)]"
-            : "bg-transparent"
+            : !isHome
+              ? "bg-white/80 backdrop-blur-md border-b border-[var(--border)]"
+              : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -108,12 +120,12 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-500 transition-colors relative group ${
-                  isScrolled || isMobileOpen ? "text-gray-700" : "text-white/90 hover:text-white"
+                  needsDarkText ? "text-gray-700" : "text-white/90 hover:text-white"
                 } hover:text-[var(--primary)]`}
               >
                 {link.label}
                 <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--primary)] rounded-full group-hover:w-full transition-all duration-300 ${
-                  !isScrolled && !isMobileOpen ? "bg-white" : ""
+                  !needsDarkText ? "bg-white" : ""
                 }`} />
               </Link>
             ))}
@@ -124,7 +136,7 @@ export default function Navbar() {
             <button
               aria-label="Search"
               className={`p-2 rounded-xl transition-all ${
-                isScrolled || isMobileOpen 
+                needsDarkText 
                   ? "text-gray-600 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10" 
                   : "text-white/80 hover:text-white hover:bg-white/10"
               }`}
@@ -192,7 +204,7 @@ export default function Navbar() {
                 <Link 
                   href="/login" 
                   className={`py-2.5 px-5 text-sm font-semibold transition-all ${
-                    isScrolled || isMobileOpen 
+                    needsDarkText 
                       ? "btn-outline" 
                       : "text-white hover:text-white/80"
                   }`}
@@ -210,7 +222,7 @@ export default function Navbar() {
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             className={`md:hidden p-2 rounded-xl transition-all ${
-              isScrolled || isMobileOpen ? "text-gray-700" : "text-white"
+              needsDarkText ? "text-gray-700" : "text-white"
             } hover:text-[var(--primary)]`}
             aria-label="Toggle menu"
           >
