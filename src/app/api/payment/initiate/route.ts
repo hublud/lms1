@@ -41,15 +41,17 @@ export async function POST(req: NextRequest) {
     // Call PayUnit
     const apiKey = process.env.PAYUNIT_API_KEY!;
     const apiToken = process.env.PAYUNIT_API_TOKEN!;
+    const apiUser = process.env.PAYUNIT_API_USER || apiToken; // Fallback to token if user is not set
     const apiUrl = process.env.PAYUNIT_API_URL || "https://gateway.payunit.net";
+    const mode = process.env.PAYUNIT_MODE || "live";
 
     const payunitRes = await fetch(`${apiUrl}/api/gateway/makepayment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-api-key": apiKey,
-        "x-api-user": apiToken,
-        "mode": "live",
+        "x-api-user": apiUser,
+        "mode": mode,
       },
       body: JSON.stringify({
         gateway,
@@ -65,14 +67,24 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    const payunitData = await payunitRes.json();
+    const contentType = payunitRes.headers.get("content-type");
+    let payunitData: any;
+    
+    if (contentType && contentType.includes("application/json")) {
+      payunitData = await payunitRes.json();
+    } else {
+      const text = await payunitRes.text();
+      console.error("PayUnit returned non-JSON response:", text);
+      throw new Error(`PayUnit API error: ${payunitRes.status} ${payunitRes.statusText}`);
+    }
+
     console.log("PayUnit response:", payunitData);
 
-    if (!payunitRes.ok || payunitData.status === "error") {
+    if (!payunitRes.ok || payunitData.status === "FAILED" || payunitData.status === "error") {
       // Clean up pending record on failure
       await supabaseAdmin.from("payments").delete().eq("transaction_id", transactionId);
       return NextResponse.json(
-        { error: payunitData.message || "PayUnit request failed" },
+        { error: payunitData.message || "PayUnit payment initiation failed" },
         { status: 400 }
       );
     }
