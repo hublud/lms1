@@ -83,8 +83,11 @@ export default function Navbar() {
   const isLoggedIn = !!user;
 
   // Do not render the global Navbar in the admin panel or student dashboard
-  // because they have their own sidebar & header.
-  if (pathname?.startsWith("/admin") || pathname?.startsWith("/dashboard")) {
+  if (
+    pathname?.includes("/admin") || 
+    pathname?.includes("/dashboard") ||
+    pathname?.includes("/courses/") // Hide on course player too
+  ) {
     return null;
   }
 

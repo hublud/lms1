@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
       headers: {
         "Content-Type": "application/json",
         "x-api-key": apiKey,
-        Authorization: `Basic ${Buffer.from(`${apiKey}:${apiToken}`).toString("base64")}`,
-        mode: "live",
+        "x-api-user": apiToken,
+        "mode": "live",
       },
       body: JSON.stringify({
         gateway,

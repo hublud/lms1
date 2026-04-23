@@ -202,15 +202,27 @@ function DashboardContent() {
 
   const totalHoursLearned = enrollments.reduce((acc, c) => acc + (c.completedLessons * 0.5), 0).toFixed(1);
 
-  const dynamicAchievements = [
-    { icon: Flame, label: "7-Day Streak", color: "text-orange-500", bg: "bg-orange-100" },
-    { icon: Star, label: "Active Learner", color: "text-amber-500", bg: "bg-amber-100" },
-  ];
-  if (certificates.length > 0) {
-    dynamicAchievements.push({ icon: Award, label: `${certificates.length} Certificate${certificates.length > 1 ? 's' : ''}`, color: "text-purple-500", bg: "bg-purple-100" });
+  const dynamicAchievements = [];
+  
+  // 1. Streak Achievement
+  const currentStreak = profile?.streak || 0;
+  if (currentStreak > 0) {
+    dynamicAchievements.push({ 
+      icon: Flame, 
+      label: `${currentStreak}-Day Streak`, 
+      color: "text-orange-500", 
+      bg: "bg-orange-100" 
+    });
   }
-  if (totalProgress > 50) {
-    dynamicAchievements.push({ icon: Target, label: "Goal Crusher", color: "text-green-600", bg: "bg-green-100" });
+
+  // 2. Certificates Achievement (Live)
+  if (certificates.length > 0) {
+    dynamicAchievements.push({ 
+      icon: Award, 
+      label: `${certificates.length} Certificate${certificates.length > 1 ? 's' : ''}`, 
+      color: "text-purple-500", 
+      bg: "bg-purple-100" 
+    });
   }
 
   const tabLabel = navItems.find((n) => n.id === activeTab)?.label || "Dashboard";
@@ -322,17 +334,29 @@ function DashboardContent() {
       <div className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
         {/* Top bar */}
         <header className="sticky top-0 z-20 bg-white border-b border-[var(--border)] px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
+              className="lg:hidden p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 transition-colors flex-shrink-0"
               aria-label="Open menu"
             >
               <Menu className="w-5 h-5 text-gray-600" />
             </button>
-            <div className="min-w-0">
-              <h1 className="font-bold text-gray-800 capitalize text-sm sm:text-base truncate">{tabLabel}</h1>
-              <p className="text-[10px] sm:text-xs text-gray-400 truncate">Welcome back, {profile?.full_name?.split(' ')[0] || "Learner"}! 👋</p>
+            
+            {/* Logo on mobile only */}
+            <Link href="/" className="lg:hidden flex-shrink-0 mr-1 sm:mr-2">
+              <Image 
+                src="/logo-gizami.png" 
+                alt="Gizami" 
+                width={100} 
+                height={35} 
+                className="h-6 sm:h-7 w-auto object-contain"
+              />
+            </Link>
+
+            <div className="min-w-0 border-l border-gray-200 pl-2 sm:pl-3 lg:border-none lg:p-0">
+              <h1 className="font-bold text-gray-800 capitalize text-sm sm:text-base truncate leading-tight">{tabLabel}</h1>
+              <p className="text-[10px] sm:text-xs text-gray-400 truncate leading-tight">Welcome back, {profile?.full_name?.split(' ')[0] || "Learner"}! 👋</p>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
@@ -488,7 +512,7 @@ function DashboardContent() {
                       <span className="text-[10px] font-bold text-orange-600 bg-orange-200/50 px-2.5 py-1 rounded-full uppercase tracking-tight">Active</span>
                     </div>
                     <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-4xl font-black text-orange-500">7</span>
+                      <span className="text-4xl font-black text-orange-500">{profile?.streak || 0}</span>
                       <span className="text-xs font-bold text-orange-400">Days</span>
                     </div>
                     <p className="text-[10px] text-orange-600/70 font-medium leading-relaxed">
