@@ -153,7 +153,7 @@ export default function CourseCard({ course, loading }: CourseCardProps) {
 
           {/* Badge */}
           {course.badge && (
-            <div className={`absolute top-2.5 left-2.5 px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-600 font-semibold z-10 ${badgeColors[course.badge] || "bg-gray-800 text-white"}`}>
+            <div className={`absolute top-2.5 left-2.5 px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-semibold z-10 ${badgeColors[course.badge] || "bg-gray-800 text-white"}`}>
               {course.badge}
             </div>
           )}
@@ -186,7 +186,7 @@ export default function CourseCard({ course, loading }: CourseCardProps) {
           </div>
 
           {/* Title */}
-          <h3 className="font-600 text-gray-800 text-base leading-snug mb-3 group-hover:text-[var(--primary)] transition-colors line-clamp-2 font-semibold min-h-[2.5rem]">
+          <h3 className="text-gray-800 text-base leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-2 font-semibold min-h-[2.5rem]">
             {course.title}
           </h3>
 

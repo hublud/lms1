@@ -319,150 +319,182 @@ function DashboardContent() {
       )}
 
       {/* Main content */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
         {/* Top bar */}
-        <header className="sticky top-0 z-20 bg-white border-b border-[var(--border)] px-4 sm:px-6 py-4 flex items-center justify-between">
+        <header className="sticky top-0 z-20 bg-white border-b border-[var(--border)] px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              onClick={() => setIsSidebarOpen(true)}
               className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
-              aria-label="Toggle sidebar"
+              aria-label="Open menu"
             >
               <Menu className="w-5 h-5 text-gray-600" />
             </button>
-            <div>
-              <h1 className="font-bold text-gray-800 capitalize">{tabLabel}</h1>
-              <p className="text-xs text-gray-400">Welcome back, {profile?.full_name?.split(' ')[0] || "Learner"}! 👋</p>
+            <div className="min-w-0">
+              <h1 className="font-bold text-gray-800 capitalize text-sm sm:text-base truncate">{tabLabel}</h1>
+              <p className="text-[10px] sm:text-xs text-gray-400 truncate">Welcome back, {profile?.full_name?.split(' ')[0] || "Learner"}! 👋</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 sm:gap-4">
             <button className="relative p-2 text-gray-500 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-xl transition-all" aria-label="Notifications">
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[var(--accent)] rounded-full" />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-[var(--accent)] rounded-full border-2 border-white" />
             </button>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] flex items-center justify-center text-white text-xs font-bold">
-              {profile?.full_name?.charAt(0) || user?.email?.charAt(0)?.toUpperCase()}
+            <div className="flex items-center gap-2 group cursor-pointer">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] flex items-center justify-center text-white text-xs font-bold shadow-sm shadow-[var(--primary)]/20">
+                {profile?.full_name?.charAt(0) || user?.email?.charAt(0)?.toUpperCase()}
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-600 transition-all rotate-90 sm:rotate-0" />
             </div>
           </div>
         </header>
 
-        <main className="p-4 sm:p-6 space-y-6">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
           {isLoading ? (
             <div className="flex items-center justify-center py-20">
-              <div className="animate-spin w-8 h-8 border-4 border-[var(--primary)] border-t-transparent rounded-full" />
+              <div className="animate-spin w-8 h-8 border-4 border-[var(--primary)] border-t-transparent rounded-full shadow-lg" />
             </div>
           ) : (
-          <>
+          <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 pb-10">
             {/* ─── OVERVIEW TAB ─── */}
             {activeTab === "overview" && (
               <>
                 {/* Stats */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
-                    { label: "Courses Enrolled", value: enrollments.length, icon: BookOpen, color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
+                    { label: "Enrolled", value: enrollments.length, icon: BookOpen, color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
                     { label: "Avg. Progress", value: `${totalProgress}%`, icon: TrendingUp, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
                     { label: "Hours Learned", value: `${totalHoursLearned}h`, icon: Clock, color: "text-purple-600", bg: "bg-purple-100" },
                     { label: "Certificates", value: certificates.length, icon: Award, color: "text-blue-600", bg: "bg-blue-100" },
                   ].map((stat) => (
-                    <div key={stat.label} className="bg-white rounded-2xl border border-[var(--border)] p-4 hover:shadow-md transition-shadow">
-                      <div className={`w-10 h-10 ${stat.bg} rounded-xl flex items-center justify-center mb-3`}>
-                        <stat.icon className={`w-5 h-5 ${stat.color}`} />
+                    <div key={stat.label} className="bg-white rounded-2xl border border-[var(--border)] p-4 sm:p-5 hover:border-[var(--primary)]/30 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                      <div className={`w-10 h-10 sm:w-11 sm:h-11 ${stat.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                        <stat.icon className={`w-5 h-5 sm:w-5.5 sm:h-5.5 ${stat.color}`} />
                       </div>
-                      <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
+                      <p className="text-2xl sm:text-3xl font-extrabold text-gray-800 leading-none">{stat.value}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 mt-2 font-medium uppercase tracking-wider">{stat.label}</p>
                     </div>
                   ))}
                 </div>
 
-              {/* Achievements */}
-              <div className="bg-white rounded-2xl border border-[var(--border)] p-5">
-                <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <Star className="w-4 h-4 text-amber-500" />
-                  Your Achievements
-                </h2>
-                <div className="flex flex-wrap gap-3">
-                  {dynamicAchievements.map((a) => (
-                    <div key={a.label} className={`flex items-center gap-2 px-3 py-2 rounded-xl ${a.bg}`}>
-                      <a.icon className={`w-4 h-4 ${a.color}`} />
-                      <span className={`text-xs font-semibold ${a.color}`}>{a.label}</span>
+              <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
+                {/* Left Column (Main Stats & Courses) */}
+                <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+                  {/* Enrolled courses */}
+                  <section>
+                    <div className="flex items-center justify-between mb-4 px-1">
+                      <h2 className="font-bold text-gray-800 flex items-center gap-2 text-base sm:text-lg">
+                        <BookOpen className="w-5 h-5 text-[var(--primary)]" />
+                        Active Courses
+                      </h2>
+                      <button
+                        onClick={() => setActiveTab("courses")}
+                        className="text-xs sm:text-sm text-[var(--primary)] font-bold hover:underline flex items-center gap-1"
+                      >
+                        See All <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Enrolled courses */}
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-bold text-gray-800 flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-[var(--primary)]" />
-                    My Enrolled Courses
-                  </h2>
-                  <button
-                    onClick={() => setActiveTab("courses")}
-                    className="text-sm text-[var(--primary)] font-medium hover:underline flex items-center gap-1"
-                  >
-                    View all <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-                <div className="space-y-3">
-                  {enrollments.length === 0 ? (
-                    <div className="text-center py-10 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                      <p className="text-sm text-gray-500">You haven&apos;t enrolled in any courses yet.</p>
-                      <Link href="/courses" className="text-[var(--primary)] text-sm font-semibold mt-2 inline-block hover:underline">Browse Courses</Link>
-                    </div>
-                  ) : (
-                    enrollments.slice(0, 2).map((course) => (
-                      <div key={course.id} className="bg-white rounded-2xl border border-[var(--border)] p-3 sm:p-4 hover:shadow-md transition-all group">
-                        <div className="flex gap-3">
-                          <div className="relative w-14 h-14 sm:w-20 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
-                            {course.image && <Image src={course.image} alt={course.title} fill className="object-cover" />}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-sm text-gray-800 line-clamp-1">{course.title}</p>
-                            <p className="text-xs text-gray-500 truncate">by {course.instructor}</p>
-                            <div className="mt-2">
-                              <div className="flex items-center justify-between mb-1">
-                                <span className="text-xs text-gray-400">{course.completedLessons}/{course.totalLessons || 10} lessons</span>
-                                <span className="text-xs font-bold text-[var(--primary)]">{course.progress}%</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {enrollments.length === 0 ? (
+                        <div className="col-span-full text-center py-12 bg-white rounded-3xl border-2 border-dashed border-gray-100 px-6">
+                          <p className="text-sm text-gray-400 mb-4">Your dashboard is feeling a bit lonely. Start learning today!</p>
+                          <Link href="/courses" className="btn-primary py-2 px-6 text-sm">Explore Content</Link>
+                        </div>
+                      ) : (
+                        enrollments.slice(0, 2).map((course) => (
+                          <div key={course.id} className="bg-white rounded-3xl border border-[var(--border)] p-4 hover:shadow-xl transition-all group flex flex-col">
+                            <div className="flex gap-4 mb-4">
+                              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden flex-shrink-0 bg-gray-50 shadow-inner">
+                                {course.image && <Image src={course.image} alt={course.title} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />}
                               </div>
-                              <div className="progress-bar">
-                                <div className="progress-fill" style={{ width: `${course.progress}%` }} />
+                              <div className="flex-1 min-w-0 pt-1">
+                                <p className="font-bold text-sm text-gray-800 line-clamp-1 mb-1">{course.title}</p>
+                                <p className="text-[10px] sm:text-xs text-gray-500 truncate">Instructor: {course.instructor}</p>
                               </div>
                             </div>
+                            <div className="mt-auto">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-[10px] text-gray-400 font-medium">{course.completedLessons}/{course.totalLessons || 10} modules</span>
+                                <span className="text-[10px] font-bold text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-0.5 rounded-full">{course.progress}%</span>
+                              </div>
+                              <div className="progress-bar h-1.5 mb-4">
+                                <div className="progress-fill" style={{ width: `${course.progress}%` }} />
+                              </div>
+                              <Link href={`/courses/${course.id}/learn`} className="btn-primary w-full justify-center text-xs py-2.5 transition-all group-hover:shadow-[var(--primary)]/20" aria-label={`Continue ${course.title}`}>
+                                <Play className="w-3.5 h-3.5 fill-current" /> Resume Learning
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                        <Link href={`/courses/${course.id}/learn`} className="btn-primary w-full justify-center text-xs py-2 mt-3" aria-label={`Continue ${course.title}`}>
-                          <Play className="w-3 h-3" /> Continue
-                        </Link>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
+                        ))
+                      )}
+                    </div>
+                  </section>
 
-              {/* Recently Accessed */}
-              <div className="bg-white rounded-2xl border border-[var(--border)] p-5">
-                <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[var(--primary)]" />
-                  Recently Accessed Lessons
-                </h2>
-                <div className="space-y-3">
-                  {enrollments.length === 0 ? (
-                    <p className="text-xs text-gray-400 italic">No recently accessed lessons.</p>
-                  ) : (
-                    enrollments.slice(0, 3).map((course) => (
-                      <Link key={course.id} href={`/courses/${course.id}/learn`} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors border border-[var(--border)] group">
-                        <div className="w-10 h-10 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors">
-                          <Play className="w-4 h-4 text-[var(--primary)] ml-0.5" />
+                  {/* Recently Accessed */}
+                  <section className="bg-white rounded-3xl border border-[var(--border)] p-5 sm:p-6 shadow-sm">
+                    <h2 className="font-bold text-gray-800 mb-6 flex items-center gap-2 text-base sm:text-lg">
+                      <Clock className="w-5 h-5 text-[var(--primary)]" />
+                      Resume Where You Left Off
+                    </h2>
+                    <div className="space-y-4">
+                      {enrollments.length === 0 ? (
+                        <p className="text-xs text-gray-400 italic text-center py-4">No content history yet.</p>
+                      ) : (
+                        enrollments.slice(0, 3).map((course) => (
+                          <Link key={course.id} href={`/courses/${course.id}/learn`} className="flex items-center gap-4 p-3.5 rounded-2xl hover:bg-[var(--primary)]/5 transition-all border border-gray-50 hover:border-[var(--primary)]/10 group">
+                            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[var(--primary)] shadow-md shadow-[var(--primary)]/20 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                              <Play className="w-4 h-4 text-white ml-0.5 fill-current" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-bold text-gray-800 line-clamp-1 group-hover:text-[var(--primary)] transition-colors">{course.title}</p>
+                              <p className="text-[10px] sm:text-xs text-gray-500 mt-1">Next: {course.nextLesson}</p>
+                            </div>
+                            <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[var(--primary)] group-hover:translate-x-1 transition-all" />
+                          </Link>
+                        ))
+                      )}
+                    </div>
+                  </section>
+                </div>
+
+                {/* Right Column (Achievements & Mini Sections) */}
+                <div className="space-y-6 sm:space-y-8">
+                  {/* Achievements */}
+                  <section className="bg-white rounded-3xl border border-[var(--border)] p-5 sm:p-6 shadow-sm">
+                    <h2 className="font-bold text-gray-800 mb-6 flex items-center gap-2 text-base sm:text-lg">
+                      <Star className="w-5 h-5 text-amber-500" />
+                      Achievements
+                    </h2>
+                    <div className="grid grid-cols-1 gap-3">
+                      {dynamicAchievements.map((a) => (
+                        <div key={a.label} className={`flex items-center gap-3 p-3 rounded-2xl ${a.bg} border border-transparent hover:border-current/10 transition-all`}>
+                          <div className="p-2 rounded-xl bg-white shadow-sm">
+                            <a.icon className={`w-4 h-4 ${a.color}`} />
+                          </div>
+                          <span className={`text-xs font-bold ${a.color}`}>{a.label}</span>
+                          <CheckCircle2 className={`w-4 h-4 ${a.color} ml-auto opacity-40`} />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-gray-800 line-clamp-1">{course.title}</p>
-                          <p className="text-xs text-gray-500 mt-0.5">Resume from {course.nextLesson}</p>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-gray-400" />
-                      </Link>
-                    ))
-                  )}
+                      ))}
+                    </div>
+                  </section>
+
+                  {/* Learning Streak Mini */}
+                  <section className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-3xl border border-orange-200/50 p-5 sm:p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">
+                        <Flame className="w-4.5 h-4.5 text-orange-500" />
+                        Daily Streak
+                      </h3>
+                      <span className="text-[10px] font-bold text-orange-600 bg-orange-200/50 px-2.5 py-1 rounded-full uppercase tracking-tight">Active</span>
+                    </div>
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <span className="text-4xl font-black text-orange-500">7</span>
+                      <span className="text-xs font-bold text-orange-400">Days</span>
+                    </div>
+                    <p className="text-[10px] text-orange-600/70 font-medium leading-relaxed">
+                      You&apos;re doing great! Keep learning every day to maintain your streak.
+                    </p>
+                  </section>
                 </div>
               </div>
             </>
@@ -470,74 +502,67 @@ function DashboardContent() {
 
           {/* ─── COURSES TAB ─── */}
           {activeTab === "courses" && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* Header row — stacks on very small screens */}
-              <div className="flex flex-col xs:flex-row xs:items-center gap-3 justify-between">
-                <h2 className="font-bold text-gray-800 flex items-center gap-2 text-base">
-                  <BookOpen className="w-4 h-4 text-[var(--primary)] flex-shrink-0" />
-                  All Enrolled Courses
-                  <span className="text-xs bg-[var(--primary)]/10 text-[var(--primary)] font-bold px-2 py-0.5 rounded-full">{enrollments.length}</span>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between bg-white p-4 rounded-2xl border border-[var(--border)] shadow-sm">
+                <h2 className="font-bold text-gray-800 flex items-center gap-2.5 text-base sm:text-lg">
+                  <BookOpen className="w-5 h-5 text-[var(--primary)] flex-shrink-0" />
+                  My Learning Path
+                  <span className="text-[10px] bg-[var(--primary)] text-white font-black px-2 py-0.5 rounded-full">{enrollments.length}</span>
                 </h2>
-                <Link href="/courses" className="btn-outline text-xs py-2 px-4 self-start xs:self-auto">
-                  Browse More
+                <Link href="/courses" className="btn-primary text-xs py-2.5 px-6 self-start sm:self-auto shadow-md shadow-[var(--primary)]/20">
+                  Find More Courses
                 </Link>
               </div>
 
               {enrollments.length === 0 ? (
-                <div className="text-center py-16 bg-white rounded-2xl border border-[var(--border)]">
-                  <div className="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <BookOpen className="w-7 h-7 text-gray-400" />
+                <div className="text-center py-20 bg-white rounded-3xl border border-[var(--border)] shadow-sm px-6">
+                  <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="w-8 h-8 text-gray-200" />
                   </div>
-                  <h3 className="text-base font-bold text-gray-700">No enrollments yet</h3>
-                  <p className="text-sm text-gray-500 mt-1 mb-5">Start your learning journey today!</p>
-                  <Link href="/courses" className="btn-primary text-sm py-2.5 px-5">Explore Courses</Link>
+                  <h3 className="text-lg font-bold text-gray-800">No courses yet</h3>
+                  <p className="text-sm text-gray-500 mt-2 mb-8 max-w-xs mx-auto">Start your learning journey today and discover a world of knowledge.</p>
+                  <Link href="/courses" className="btn-primary text-sm py-3 px-8">Explore Catalog</Link>
                 </div>
               ) : (
-                enrollments.map((course) => (
-                  <div key={course.id} className="bg-white rounded-2xl border border-[var(--border)] p-4 hover:shadow-md transition-all group">
-                    {/* Top: image + info row */}
-                    <div className="flex gap-3 mb-3">
-                      <div className="relative w-16 h-16 sm:w-24 sm:h-20 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
-                        {course.image && <Image src={course.image} alt={course.title} fill className="object-cover group-hover:scale-105 transition-transform" />}
+                <div className="grid grid-cols-1 gap-4">
+                  {enrollments.map((course) => (
+                    <div key={course.id} className="bg-white rounded-2xl border border-[var(--border)] p-4 sm:p-5 hover:shadow-xl transition-all group flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+                      {/* Left: image */}
+                      <div className="relative w-full sm:w-32 h-40 sm:h-24 rounded-xl overflow-hidden flex-shrink-0 bg-gray-50 shadow-inner">
+                        {course.image && <Image src={course.image} alt={course.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />}
+                        <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/50 backdrop-blur-md text-white text-[8px] font-black rounded uppercase tracking-widest">{course.category}</div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <span className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-wide">{course.category}</span>
-                        <h3 className="font-bold text-sm text-gray-800 leading-snug line-clamp-2 mt-0.5">{course.title}</h3>
-                        <p className="text-xs text-gray-500 mt-0.5 truncate">by {course.instructor}</p>
+                      
+                      {/* Middle: Info */}
+                      <div className="flex-1 min-w-0 flex flex-col h-full justify-center">
+                        <h3 className="font-bold text-base sm:text-lg text-gray-800 leading-tight line-clamp-2 group-hover:text-[var(--primary)] transition-colors">{course.title}</h3>
+                        <p className="text-xs text-gray-500 mt-1 mb-3">By {course.instructor}</p>
+                        
+                        <div className="flex items-center gap-3">
+                           <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden shadow-inner flex-shrink-0">
+                             <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] rounded-full transition-all duration-1000" style={{ width: `${course.progress}%` }} />
+                           </div>
+                           <span className="text-[10px] font-black text-[var(--primary)] min-w-[30px]">{course.progress}%</span>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Progress */}
-                    <div className="mb-3">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs text-gray-500">{course.completedLessons}/{course.totalLessons || 10} lessons</span>
-                        <span className="text-xs font-bold text-[var(--primary)]">{course.progress}%</span>
-                      </div>
-                      <div className="progress-bar h-2">
-                        <div className="progress-fill" style={{ width: `${course.progress}%` }} />
+                      {/* Right: Actions */}
+                      <div className="w-full sm:w-auto flex sm:flex-col items-center justify-between sm:justify-center gap-3 pt-3 sm:pt-0 sm:border-l sm:border-gray-100 sm:pl-5">
+                          <div className="text-[10px] text-gray-400 font-medium flex items-center gap-1">
+                             <Clock className="w-3 h-3" /> {course.lastAccessed}
+                          </div>
+                          <Link
+                            href={`/courses/${course.id}/learn`}
+                            className="btn-primary text-xs py-2.5 px-6 rounded-xl flex-shrink-0 w-full sm:w-auto text-center"
+                            aria-label={`Continue ${course.title}`}
+                          >
+                             Resume
+                          </Link>
                       </div>
                     </div>
-
-                    {/* Footer: meta + CTA */}
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <div className="flex items-center gap-3 text-xs text-gray-400 flex-wrap">
-                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {course.lastAccessed}</span>
-                        {course.progress === 100 && (
-                          <span className="flex items-center gap-1 text-green-600 font-semibold">
-                            <CheckCircle2 className="w-3 h-3" /> Completed
-                          </span>
-                        )}
-                      </div>
-                      <Link
-                        href={`/courses/${course.id}/learn`}
-                        className="btn-primary text-xs py-2 px-4 flex-shrink-0"
-                        aria-label={`Continue ${course.title}`}
-                      >
-                        <Play className="w-3 h-3" /> Continue
-                      </Link>
-                    </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </div>
           )}
@@ -553,34 +578,31 @@ function DashboardContent() {
                   </h2>
                   <span className="text-xs text-gray-400">Apr 7 – Apr 13</span>
                 </div>
-                <div className="flex items-center gap-6">
-                  <div className="relative flex-shrink-0">
-                    <ProgressRing percent={71} size={90} />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-lg font-extrabold text-gray-800">71%</span>
+                  <div className="flex items-center gap-4 sm:gap-6">
+                    <div className="relative flex-shrink-0">
+                      <ProgressRing percent={71} size={80} />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-base font-extrabold text-gray-800">71%</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-2">
+                       {/* Compact day stats */}
+                      {[
+                        { day: "M", done: true },
+                        { day: "T", done: true },
+                        { day: "W", done: true },
+                        { day: "T", done: true },
+                        { day: "F", done: true },
+                        { day: "S", done: false },
+                        { day: "S", done: false },
+                      ].map((d, i) => (
+                        <div key={i} className={`flex flex-col items-center justify-center p-2 rounded-xl border ${d.done ? "bg-[var(--primary)]/5 border-[var(--primary)]/10" : "bg-gray-50 border-gray-100 opacity-50"}`}>
+                           <span className={`text-[10px] font-bold ${d.done ? "text-[var(--primary)]" : "text-gray-400"}`}>{d.day}</span>
+                           {d.done ? <CheckCircle2 className="w-3 h-3 text-[var(--primary)] mt-1" /> : <Circle className="w-3 h-3 text-gray-300 mt-1" />}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="flex-1 space-y-2">
-                    {[
-                      { day: "Mon", done: true, time: "45 min" },
-                      { day: "Tue", done: true, time: "62 min" },
-                      { day: "Wed", done: true, time: "30 min" },
-                      { day: "Thu", done: true, time: "90 min" },
-                      { day: "Fri", done: true, time: "25 min" },
-                      { day: "Sat", done: false, time: "—" },
-                      { day: "Sun", done: false, time: "—" },
-                    ].map((d) => (
-                      <div key={d.day} className="flex items-center gap-3">
-                        <span className="text-xs text-gray-400 w-7">{d.day}</span>
-                        {d.done
-                          ? <CheckCircle2 className="w-4 h-4 text-[var(--primary)]" />
-                          : <Circle className="w-4 h-4 text-gray-200" />
-                        }
-                        <span className={`text-xs ${d.done ? "text-gray-700 font-medium" : "text-gray-300"}`}>{d.time}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
 
               {/* Course progress cards */}
@@ -631,29 +653,29 @@ function DashboardContent() {
               </div>
 
               {/* Learning Streak */}
-              <div className="bg-white rounded-2xl border border-[var(--border)] p-5">
-                <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <Flame className="w-4 h-4 text-orange-500" />
-                  Learning Streak
+              <div className="bg-white rounded-2xl border border-[var(--border)] p-5 sm:p-6 shadow-sm overflow-hidden">
+                <h2 className="font-bold text-gray-800 mb-6 flex items-center gap-2">
+                  <Flame className="w-5 h-5 text-orange-500" />
+                  Activity Graph
                 </h2>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="text-center">
-                    <p className="text-4xl font-extrabold text-orange-500">7</p>
-                    <p className="text-xs text-gray-500">day streak</p>
+                <div className="flex flex-col sm:flex-row items-center gap-6 mb-4">
+                  <div className="text-center px-4 py-2 bg-orange-50 rounded-2xl border border-orange-100 flex-shrink-0">
+                    <p className="text-4xl font-black text-orange-500">7</p>
+                    <p className="text-[10px] font-bold text-orange-600 uppercase tracking-widest">Day Streak</p>
                   </div>
-                  <div className="flex-1 grid grid-cols-7 gap-1">
-                    {Array.from({ length: 21 }).map((_, i) => (
+                  <div className="flex-1 flex flex-wrap justify-center sm:justify-start gap-1">
+                    {Array.from({ length: 42 }).map((_, i) => (
                       <div
                         key={i}
-                        className={`h-7 rounded-lg ${
-                          i >= 14 ? "bg-orange-400" : i >= 10 ? "bg-orange-200" : "bg-gray-100"
+                        className={`w-3.5 h-3.5 rounded-sm sm:rounded ${
+                          i >= 35 ? "bg-orange-500" : i >= 20 ? "bg-orange-200" : "bg-gray-100"
                         }`}
-                        title={`Day ${i + 1}`}
+                        title={`Activity level ${i}`}
                       />
                     ))}
                   </div>
                 </div>
-                <p className="text-xs text-gray-400 text-center">Keep it up! You&apos;re on fire 🔥</p>
+                <p className="text-xs text-gray-400 text-center sm:text-left">Your consistency is paying off! Keep it up 🔥</p>
               </div>
             </div>
           )}
@@ -864,7 +886,7 @@ function DashboardContent() {
               </div>
             </div>
           )}
-          </>
+          </div>
         )}
         </main>
       </div>

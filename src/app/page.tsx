@@ -111,17 +111,17 @@ export default function HomePage() {
       <HeroSlider />
 
       {/* Stats Bar */}
-      <section className="py-10 bg-white border-b border-[var(--border)]" aria-label="Platform statistics">
+      <section className="py-8 sm:py-12 bg-white border-b border-[var(--border)]" aria-label="Platform statistics">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {stats.map((stat) => (
-              <div key={stat.label} className="flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors">
-                <div className={`w-12 h-12 ${stat.bg} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
+              <div key={stat.label} className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 sm:gap-4 p-3 rounded-2xl hover:bg-gray-50 transition-colors">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 ${stat.bg} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                  <stat.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${stat.color}`} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
-                  <p className="text-sm text-gray-500">{stat.label}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-800 leading-tight">{stat.value}</p>
+                  <p className="text-[10px] sm:text-sm text-gray-500 font-medium uppercase tracking-wider">{stat.label}</p>
                 </div>
               </div>
             ))}
@@ -130,28 +130,28 @@ export default function HomePage() {
       </section>
 
       {/* Featured Courses */}
-      <section className="py-20" aria-labelledby="featured-courses-heading">
+      <section className="section-py" aria-labelledby="featured-courses-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-            <div>
-              <div className="section-badge">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="text-center md:text-left mx-auto md:mx-0">
+              <div className="section-badge mx-auto md:mx-0">
                 <Lightbulb className="w-3.5 h-3.5" />
                 Featured Courses
               </div>
               <h2 id="featured-courses-heading" className="section-title">
                 Learn from the Best
               </h2>
-              <p className="section-subtitle mt-2">
+              <p className="section-subtitle mt-3">
                 Discover our curated courses crafted by industry experts
               </p>
             </div>
-            <Link href="/courses" className="btn-outline whitespace-nowrap">
+            <Link href="/courses" className="btn-outline btn-full-mobile">
               View All Courses
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 tracking-tight">
             {featuredCourses.map((course) => (
               <CourseCard key={course.id} course={course} />
             ))}
@@ -160,34 +160,34 @@ export default function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="py-20 bg-white" aria-labelledby="categories-heading">
+      <section className="section-py bg-white" aria-labelledby="categories-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="section-badge mx-auto w-fit">
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="section-badge mx-auto">
               <BookOpen className="w-3.5 h-3.5" />
               Explore Topics
             </div>
             <h2 id="categories-heading" className="section-title">Browse by Category</h2>
-            <p className="section-subtitle mt-2 mx-auto text-center">
+            <p className="section-subtitle mt-3 mx-auto">
               Find the perfect course in your area of interest
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {fetchedCategories.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/courses?category=${cat.name}`}
-                className="group flex items-center gap-4 p-5 rounded-2xl border-2 border-transparent hover:border-current transition-all hover:shadow-lg hover:-translate-y-1"
-                style={{ backgroundColor: "white", color: "var(--primary)" }}
+                className="group flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border-2 border-transparent hover:border-[var(--primary)] transition-all hover:shadow-xl hover:-translate-y-1 bg-gray-50/50 sm:bg-white"
+                style={{ color: "var(--primary)" }}
                 aria-label={`Browse ${cat.name} courses`}
               >
-                <span className="text-3xl">📚</span>
-                <div>
-                  <p className="font-semibold text-sm text-gray-800">{cat.name}</p>
-                  <p className="text-xs text-gray-400">View courses</p>
+                <span className="text-2xl sm:text-3xl filter grayscale group-hover:grayscale-0 transition-all">📚</span>
+                <div className="text-center sm:text-left">
+                  <p className="font-bold text-sm text-gray-800 leading-tight">{cat.name}</p>
+                  <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-wider font-semibold">View courses</p>
                 </div>
-                <ArrowRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="hidden sm:block w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </Link>
             ))}
           </div>
@@ -195,42 +195,42 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20" aria-labelledby="how-it-works-heading">
+      <section className="section-py" aria-labelledby="how-it-works-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <div className="section-badge mx-auto w-fit">
+          <div className="text-center mb-14 sm:mb-20">
+            <div className="section-badge mx-auto">
               <Rocket className="w-3.5 h-3.5" />
               Simple Process
             </div>
             <h2 id="how-it-works-heading" className="section-title">How It Works</h2>
-            <p className="section-subtitle mt-2 mx-auto text-center">
+            <p className="section-subtitle mt-3 mx-auto">
               Start your learning journey in three simple steps
             </p>
           </div>
 
-          <div className="relative grid md:grid-cols-3 gap-8">
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
             {/* Connector line */}
-            <div className="hidden md:block absolute top-16 left-[calc(16.7%+48px)] right-[calc(16.7%+48px)] h-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-purple-600 opacity-30" />
+            <div className="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-purple-600 opacity-20" />
 
             {steps.map((step, i) => (
               <div key={step.title} className="relative text-center group">
                 {/* Number */}
-                <div className="relative inline-block mb-6">
-                  <div className={`w-20 h-20 ${step.bg} rounded-3xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300`}>
-                    <step.icon className={`w-9 h-9 ${step.iconColor}`} />
+                <div className="relative inline-block mb-6 sm:mb-8">
+                  <div className={`w-16 h-16 sm:w-20 sm:h-20 ${step.bg} rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm`}>
+                    <step.icon className={`w-7 h-7 sm:w-9 sm:h-9 ${step.iconColor}`} />
                   </div>
-                  <div className={`absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br ${step.color} rounded-xl flex items-center justify-center shadow-md`}>
+                  <div className={`absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br ${step.color} rounded-xl flex items-center justify-center shadow-lg border-2 border-white`}>
                     <span className="text-white text-xs font-bold">{i + 1}</span>
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">{step.title}</h3>
-                <p className="text-gray-500 leading-relaxed">{step.desc}</p>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-3">{step.title}</h3>
+                <p className="text-sm sm:text-base text-gray-500 leading-relaxed max-w-xs mx-auto">{step.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <Link href="/signup" className="btn-primary text-base px-10 py-4">
+          <div className="text-center mt-12 sm:mt-16">
+            <Link href="/signup" className="btn-primary text-base px-10 py-4 btn-full-mobile">
               <GraduationCap className="w-5 h-5" />
               Start Learning for Free
             </Link>
@@ -239,78 +239,69 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white" aria-labelledby="testimonials-heading">
+      <section className="section-py bg-white" aria-labelledby="testimonials-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <div className="section-badge">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="text-center lg:text-left">
+              <div className="section-badge mx-auto lg:mx-0">
                 <Award className="w-3.5 h-3.5" />
                 Success Stories
               </div>
               <h2 id="testimonials-heading" className="section-title">
                 What Our Students Say
               </h2>
-              <p className="section-subtitle mt-3 mb-8">
+              <p className="section-subtitle mt-4 mb-10 mx-auto lg:mx-0">
                 Join thousands of learners who transformed their careers with Gizami.
               </p>
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-lg mx-auto lg:mx-0">
                 {[
                   "Expert-led video lessons",
                   "Lifetime course access",
-                  "Industry-recognized certificates",
-                  "30-day money-back guarantee",
+                  "Industry certificates",
+                  "30-day money-back",
                 ].map((feat) => (
-                  <div key={feat} className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0">
-                      <Check className="w-3 h-3 text-[var(--primary)]" />
+                  <div key={feat} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <div className="w-6 h-6 rounded-full bg-[var(--primary)]/10 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3.5 h-3.5 text-[var(--primary)]" />
                     </div>
-                    <span className="text-sm text-gray-600">{feat}</span>
+                    <span className="text-xs sm:text-sm font-medium text-gray-700">{feat}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div>
+            <div className="mt-8 lg:mt-0 max-w-lg mx-auto lg:max-w-none lg:w-full">
               <TestimonialCard />
             </div>
           </div>
         </div>
       </section>
 
-
-
       {/* CTA Banner */}
-      <section className="py-20" aria-labelledby="cta-heading">
+      <section className="section-py" aria-labelledby="cta-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--primary)] via-[#1d7a45] to-[var(--primary-light)] p-10 md:p-16 text-white text-center">
+          <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[var(--primary)] via-[#1d7a45] to-[var(--primary-light)] p-8 sm:p-12 md:p-20 text-white text-center">
             {/* Decorations */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-60 h-60 bg-[var(--accent)]/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-            <div
-              className="absolute inset-0 opacity-5"
-              style={{
-                backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-                backgroundSize: "32px 32px",
-              }}
-            />
-
-            <div className="relative">
-              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm mb-5">
+            <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-80 sm:h-80 bg-[var(--accent)]/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none" />
+            
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 text-xs sm:text-sm font-medium mb-6 sm:mb-8">
                 <Rocket className="w-4 h-4 text-[var(--accent)]" />
                 Limited Time Offer – 50% Off!
               </div>
-              <h2 id="cta-heading" className="text-4xl md:text-5xl font-extrabold mb-4">
-                Ready to Transform Your Career?
+              <h2 id="cta-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
+                Ready to Transform <br className="hidden sm:block" /> Your Career?
               </h2>
-              <p className="text-green-100 text-lg mb-8 max-w-xl mx-auto">
+              <p className="text-green-50 text-base sm:text-lg mb-10 max-w-xl mx-auto leading-relaxed opacity-90">
                 Join over 500,000 learners. Get unlimited access to all courses, certificates, and expert support.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Link href="/signup" className="btn-accent text-base px-10 py-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/signup" className="btn-accent text-base px-10 py-4 shadow-xl">
                   <GraduationCap className="w-5 h-5" />
                   Get Started Free
                 </Link>
-                <Link href="/courses" className="btn-outline-white text-base px-10 py-4">
+                <Link href="/courses" className="btn-outline-white text-base px-10 py-4 backdrop-blur-sm">
                   Browse Courses
                 </Link>
               </div>
@@ -318,6 +309,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
     </main>
   );
 }

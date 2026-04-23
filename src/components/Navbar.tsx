@@ -40,11 +40,6 @@ export default function Navbar() {
   const isHome = pathname === "/";
   const needsDarkText = !isHome || isScrolled || isMobileOpen;
 
-  // Do not render the global Navbar in the admin panel or student dashboard
-  // because they have their own sidebar & header.
-  if (pathname?.startsWith("/admin") || pathname?.startsWith("/dashboard")) {
-    return null;
-  }
 
   useEffect(() => {
     // Check initial session
@@ -86,6 +81,12 @@ export default function Navbar() {
   };
 
   const isLoggedIn = !!user;
+
+  // Do not render the global Navbar in the admin panel or student dashboard
+  // because they have their own sidebar & header.
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/dashboard")) {
+    return null;
+  }
 
   return (
     <nav

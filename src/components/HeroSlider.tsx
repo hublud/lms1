@@ -58,22 +58,22 @@ export default function HeroSlider() {
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--primary-light)]/20 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-20">
-        <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20 pb-12 sm:pt-28 sm:pb-20 md:pt-32">
+        <div className="grid lg:grid-cols-2 gap-10 xl:gap-20 items-center">
 
           {/* ── LEFT COLUMN ── */}
-          <div key={current} className="animate-fade-in-up text-white">
+          <div key={current} className="animate-fade-in-up text-white text-center lg:text-left">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-4 py-2 text-sm font-medium mb-7">
-              <span className="text-base leading-none">{slide.badge.split(" ")[0]}</span>
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-4 py-1.5 text-xs sm:text-sm font-medium mb-6 sm:mb-8">
+              <span className="text-sm sm:text-base leading-none">{slide.badge.split(" ")[0]}</span>
               <span className="text-green-100">{slide.badge.slice(2)}</span>
             </div>
 
             {/* Headline */}
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight mb-5">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight mb-5 min-h-[3.5em] lg:min-h-0">
               {slide.headline}{" "}
               <span
-                className="block"
+                className="block lg:inline"
                 style={{
                   background: "linear-gradient(135deg, #f97316 0%, #fbbf24 100%)",
                   WebkitBackgroundClip: "text",
@@ -86,36 +86,37 @@ export default function HeroSlider() {
             </h1>
 
             {/* Subtext */}
-            <p className="text-green-100 text-lg leading-relaxed mb-9 max-w-lg">
+            <p className="text-green-100 text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 max-w-lg mx-auto lg:mx-0">
               {slide.subtext}
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-4 mb-12">
-              <Link href="/signup" className="btn-accent text-base px-8 py-3.5">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10 sm:mb-14">
+              <Link href="/signup" className="btn-accent text-base px-8 py-3.5 w-full sm:w-auto">
                 {slide.ctaPrimary}
               </Link>
-              <Link href="/courses" className="btn-outline-white text-base px-8 py-3.5">
+              <Link href="/courses" className="btn-outline-white text-base px-8 py-3.5 w-full sm:w-auto">
                 <BookOpen className="w-4 h-4 flex-shrink-0" />
                 {slide.ctaSecondary}
               </Link>
             </div>
 
             {/* Stats row */}
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-8 border-t border-white/15">
+            <div className="flex items-center justify-center lg:justify-start gap-x-6 sm:gap-x-10 gap-y-4 pt-8 border-t border-white/15">
               {[slide.stat1, slide.stat2, slide.stat3].map((stat, i) => (
-                <div key={stat.label}>
+                <div key={stat.label} className="text-center lg:text-left">
                   <p
-                    className="text-2xl font-bold"
+                    className="text-xl sm:text-2xl font-bold"
                     style={{ color: "#f97316" }}
                   >
                     {stat.value}
                   </p>
-                  <p className="text-sm text-green-200 mt-0.5">{stat.label}</p>
+                  <p className="text-[10px] sm:text-xs text-green-200 mt-1 uppercase tracking-wider font-semibold">{stat.label}</p>
                 </div>
               ))}
             </div>
           </div>
+
 
           {/* ── RIGHT COLUMN – contained visual panel ── */}
           <div className="hidden lg:flex flex-col gap-4">
